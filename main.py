@@ -32,9 +32,8 @@ class ArcadeLeaugeApp(App):
 
     def build(self):
         self.main_widget = MainWidget()
-        self.minons = Minions(self.main_widget)
         self.champion = Champion(self.main_widget, self)
-
+        self.minons = Minions(self.main_widget, self.champion.champion_missile)
 
         Clock.schedule_interval(lambda dt: print(f"[\033[92mINFO\033[0m   ] [FPS         ] {str(Clock.get_fps())}"), 1)
 
@@ -54,7 +53,6 @@ class ArcadeLeaugeApp(App):
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == "spacebar":
             self.champion.shot()
-            print("space")
         elif keycode[1] == "up":
             if self.champion.current_level < 2:
                 self.champion.current_level += 1

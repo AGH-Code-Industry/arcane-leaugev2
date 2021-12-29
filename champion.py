@@ -3,7 +3,7 @@ from kivy.core.window import Window
 from kivy.graphics import Ellipse
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
-from minions import Minion, Minions
+from minions import  Minions
 from shooting import Shoot
 
 frames_per_second = 60.0
@@ -18,7 +18,7 @@ class Champion(Widget):
         self.app = app
         self.clocks = []
 
-        self.champion_missile = Shoot(main_widget, False)
+        self.champion_missile = Shoot(main_widget, True)
         self.current_level = 1
 
         self.champion = Image(source = "assets/Champion/new2.png",
@@ -40,7 +40,7 @@ class Champion(Widget):
 
     def collide_minion_bullet(self, dt):
         for minion in Minions.minions:
-            for i, bullet in enumerate(minion.minion_missile.minion_bullets):
+            for i, bullet in enumerate(minion.minion_missile.bullets):
                 if bullet.collide_widget(self.champion):
                     minion.minion_missile.destroy(i)
                     break

@@ -5,7 +5,10 @@ from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
+
+
 from shooting import Shoot
+
 
 frames_per_second = 60.0
 minion_size = Window.size[1] * .12
@@ -14,9 +17,11 @@ class Minions:
 
     minions = []
 
-    def __init__(self, main_widget):
+    def __init__(self, main_widget, champion_missile):
         self.main_screen = main_widget
 
+        self.champion_missiles = champion_missile
+        self.champion_bullets = champion_missile.bullets
 
         self.init_minions_list()
         self.window_sizes = Window.size
@@ -30,7 +35,9 @@ class Minions:
     #             self.delete_minions(i)
 
     def init_single_minion(self, dt):
-        self.minions.insert(0, Minion(self.main_screen))
+        self.minions.insert(0, Minion(self.main_screen,
+                                        self.champion_missiles,
+                                        self.champion_bullets))
         print(len(self.minions))
 
     def init_minions_list(self):
@@ -45,7 +52,7 @@ class Minions:
 
 
 class Minion:
-    def __init__(self, main_widget):
+    def __init__(self, main_widget, champion_missiles, champion_bullets):
 
         self.window_sizes = Window.size
         self.main_screen = main_widget
@@ -55,6 +62,9 @@ class Minion:
         self.current_minion_level = None
         self.minion_missile = Shoot(main_widget, False)
         self.init_minion()
+
+        self.champion_missiles = champion_missiles
+        self.champion_bullets = champion_bullets
 
         Clock.schedule_once(self.shot, random.random())
         Clock.schedule_interval(self.shot, self.minion_missile.rate)
@@ -85,5 +95,11 @@ class Minion:
         if x > self.window_sizes[0]:
             self.main_screen.remove_widget(self.this)
 
+    def collide_champion_bullet(self, dt):
+            for i, bullet in enumerate(self.champion_bullets):
+                if bullet.collide_widget(self.this):
+                    # self.champion_missiles.destroy(i)
+                    print("collide")
+                    break
 
 

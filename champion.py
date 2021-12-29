@@ -32,7 +32,10 @@ class Champion(Widget):
         # Clock.schedule_interval(self.shot, self.champion_missile.rate)
 
     def shot(self):
-        self.champion_missile.player_shoot(self.champion.pos, champion_size)
+        if self.champion_missile.player_reload:
+            self.champion_missile.player_shoot(self.champion.pos, champion_size)
+            self.champion_missile.player_reload = False
+
 
     def move(self):
         self.champion.pos = (self.window_sizes[0] * .9,

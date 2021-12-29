@@ -14,12 +14,16 @@ class Shoot:
 
         self.main_screen = main_widget
 
+        self.process = []
         self.bullets = []
         self.player_bullets = []
+        self.player_reload = True
+        self.i = 0
 
         self.player = player
 
-        Clock.schedule_interval(self.check_bullets, 1/60)
+        self.process.append(Clock.schedule_interval(self.check_bullets, 1/60))
+        Clock.schedule_interval(self.reload, 1/60)
 
 
     def minion_shoot(self, position, minion_size):
@@ -45,6 +49,12 @@ class Shoot:
             if bullet in self.main_screen.children:
                 self.main_screen.remove_widget(bullet)
 
+    def reload(self, dt):
+        if self.player_reload == False:
+            self.i += 1
+        if self.i % 60 == 0:
+            self.player_reload = True
+
 
     def minion_bullet(self, position, minion_size):
         pos = (position[0] + minion_size, position[1] + minion_size / 2)
@@ -66,3 +76,7 @@ class Shoot:
 
         self.main_screen.add_widget(self.player_bullets[-1])
         champion_shoot.start(self.player_bullets[-1])
+
+    def stop(self):
+        for process in self.process:
+            process.cancel()

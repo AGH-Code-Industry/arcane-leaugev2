@@ -29,6 +29,7 @@ class Minions:
         # Clock.schedule_once(self.init_single_minion, random.random() * 60)
         Clock.schedule_interval(self.delete_minions, 1/60)
 
+
     # def check_minions(self,time_passed):
     #     for i, minion in enumerate(self.minions):
     #         if minion.init_minion() > self.window_sizes[0]:
@@ -44,11 +45,27 @@ class Minions:
         for i in range(0, 30):
             Clock.schedule_once(self.init_single_minion, random.random() * 60)
 
+    # def collide_champion_bullet(self, dt):
+    #     for minion in self.minions:
+    #         for i, bullet in enumerate(self.champion_bullets):
+    #             if bullet.collide_widget(minion):
+    #                 self.champion_missiles.player_destroy(i)
+    #                 minion.current_minion_state = False
+    #                 break
+
     def delete_minions(self, dt):
         for i, minion in enumerate(self.minions):
             x, y = minion.get_cords()
-            if x > self.window_sizes[0]:
+            if x > self.window_sizes[0] or not minion.current_minion_state:
+                minion.remove_widget()
                 self.minions.pop(i)
+
+    def full_minion_delete(self):
+        for minion in self.minions:
+            Animation.cancel_all(minion)
+            minion.minion_missile.stop()
+            for process in minion.process:
+                process.cancel()
 
 
 class Minion:
@@ -56,7 +73,7 @@ class Minion:
 
         self.window_sizes = Window.size
         self.main_screen = main_widget
-        self.clocks = []
+        self.process = []
 
         self.current_minion_state = True
         self.current_minion_level = None
@@ -66,9 +83,9 @@ class Minion:
         self.champion_missiles = champion_missiles
         self.champion_bullets = champion_bullets
 
-        Clock.schedule_once(self.shot, random.random())
-        Clock.schedule_interval(self.shot, self.minion_missile.rate)
-        Clock.schedule_interval(self.delete_minion, 1/60)
+        self.process.append(Clock.schedule_once(self.shot, random.random()))
+        self.process.append(Clock.schedule_interval(self.shot, self.minion_missile.rate))
+        # self.process.append(Clock.schedule_interval(self.delete_minion_widget, 1/60))
         Clock.schedule_interval(self.collide_champion_bullet, 1/60)
 
     def init_minion(self):
@@ -91,10 +108,11 @@ class Minion:
     def get_cords(self):
         return self.this.pos
 
-    def delete_minion(self, dt):
-        x, y = self.get_cords()
-        if x > self.window_sizes[0] or not self.current_minion_state:
-            self.main_screen.remove_widget(self.this)
+    # def delete_minion_widget(self, dt):
+    #     x, y = self.get_cords()
+    #     if x > self.window_sizes[0] or not self.current_minion_state:
+    #         self.main_screen.remove_widget(self.this)
+    #         self.full_minion_delete()
 
     def collide_champion_bullet(self, dt):
             for i, bullet in enumerate(self.champion_bullets):
@@ -103,4 +121,11 @@ class Minion:
                     self.current_minion_state = False
                     break
 
+    def remove_widget(self):
+        self.main_screen.remove_widget(self.this)
 
+    # def full_minion_delete(self):
+    #     Animation.cancel_all(self.this)
+    #     self.minion_missile.stop()
+    #     for process in self.process:
+    #         process.cancel()

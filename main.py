@@ -52,8 +52,9 @@ class ArcadeLeaugeApp(App):
         self._keyboard = None
 
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        if keycode[1] == "space":
-            pass
+        if keycode[1] == "spacebar":
+            self.champion.shot()
+            print("space")
         elif keycode[1] == "up":
             if self.champion.current_level < 2:
                 self.champion.current_level += 1

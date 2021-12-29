@@ -34,7 +34,7 @@ class Minions:
         print(len(self.minions))
 
     def init_minions_list(self):
-        for i in range(0, 20):
+        for i in range(0, 30):
             Clock.schedule_once(self.init_single_minion, random.random() * 60)
 
     def delete_minions(self, dt):
@@ -53,11 +53,11 @@ class Minion:
 
         self.current_minion_state = "Init"
         self.current_minion_level = None
-        self.missile = Shoot(main_widget, False)
+        self.minion_missile = Shoot(main_widget, False)
         self.init_minion()
 
         Clock.schedule_once(self.shot, random.random())
-        Clock.schedule_interval(self.shot, self.missile.rate)
+        Clock.schedule_interval(self.shot, self.minion_missile.rate)
         Clock.schedule_interval(self.delete_minion, 1/60)
 
     def init_minion(self):
@@ -71,11 +71,11 @@ class Minion:
                             pos = (startX, staticY))
         self.main_screen.add_widget(self.this)
 
-        self.animate = Animation(x = borderX + 1, y = staticY,t = "out_quart", duration = 20)
+        self.animate = Animation(x = borderX * 1.2, y = staticY,t = "out_quart", duration = 20)
         self.animate.start(self.this)
 
-    def shot(self, time_passed):
-        self.missile.shoot(self.this.pos, minion_size)
+    def shot(self, dt):
+        self.minion_missile.minion_shoot(self.this.pos, minion_size)
 
     def get_cords(self):
         return self.this.pos

@@ -18,6 +18,7 @@ class Champion(Widget):
         self.app = app
         self.clocks = []
 
+        self.champion_missile = Shoot(main_widget, False)
         self.current_level = 1
 
         self.champion = Image(source = "assets/Champion/new2.png",
@@ -25,16 +26,22 @@ class Champion(Widget):
                                 pos = (self.window_sizes[0] * .9 , (self.current_level + .05) / 3 * self.window_sizes[1]))
 
         self.main_screen.add_widget(self.champion)
+        self.move()
 
-        Clock.schedule_interval(self.collide_bullet, 1/60)
+        Clock.schedule_interval(self.collide_minion_bullet, 1/60)
+        # Clock.schedule_interval(self.shot, self.champion_missile.rate)
+
+    def shot(self):
+        self.champion_missile.player_shoot(self.champion.pos, champion_size)
 
     def move(self):
         self.champion.pos = (self.window_sizes[0] * .9,
-                             (self.current_level + .05) / 3 * self.window_sizes[1] )
+                             (self.current_level + .05) / 3 * self.window_sizes[1])
 
-    def collide_bullet(self, dt):
+    def collide_minion_bullet(self, dt):
         for minion in Minions.minions:
-            for i, bullet in enumerate(minion.missile.bullets):
+            for i, bullet in enumerate(minion.minion_missile.minion_bullets):
                 if bullet.collide_widget(self.champion):
-                    minion.missile.destroy(i)
+                    minion.minion_missile.destroy(i)
                     break
+

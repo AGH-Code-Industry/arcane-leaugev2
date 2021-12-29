@@ -15,6 +15,7 @@ class Shoot:
         self.main_screen = main_widget
 
         self.bullets = []
+        self.player_bullets = []
 
         self.player = player
 
@@ -38,6 +39,12 @@ class Shoot:
             if bullet in self.main_screen.children:
                 self.main_screen.remove_widget(bullet)
 
+    def player_destroy(self, n):
+        if len(self.player_bullets) > n:
+            bullet = self.player_bullets.pop(n)
+            if bullet in self.main_screen.children:
+                self.main_screen.remove_widget(bullet)
+
 
     def minion_bullet(self, position, minion_size):
         pos = (position[0] + minion_size, position[1] + minion_size / 2)
@@ -51,11 +58,11 @@ class Shoot:
         minion_shoot.start(self.bullets[-1])
 
     def player_bullet(self, position, champion_size):
-        pos = (position[0], position[1] + champion_size / 2)
-        self.bullets.append(Image(source="assets/Minions/bullet.png",
+        pos = (position[0], position[1] + champion_size / 4)
+        self.player_bullets .append(Image(source="assets/Minions/bullet.png",
                                          pos=pos,
                                          size=(self.bullet_size, self.bullet_size)))
         champion_shoot = Animation(x = -self.bullet_size, t="out_sine", duration = 3)
 
-        self.main_screen.add_widget(self.bullets[-1])
-        champion_shoot.start(self.bullets[-1])
+        self.main_screen.add_widget(self.player_bullets[-1])
+        champion_shoot.start(self.player_bullets[-1])

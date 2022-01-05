@@ -12,11 +12,7 @@ from kivy.uix.stencilview import StencilView
 
 from champion import Champion
 from minions import Minion, Minions
-
-
-class CanvasContext(StencilView):
-    pass
-
+from background import Background
 
 class MainWidget(Widget):
     pass
@@ -32,6 +28,7 @@ class ArcadeLeaugeApp(App):
 
     def build(self):
         self.main_widget = MainWidget()
+        self.background = Background(self.main_widget)
         self.champion = Champion(self.main_widget, self)
         self.minons = Minions(self.main_widget, self.champion.champion_missile)
 

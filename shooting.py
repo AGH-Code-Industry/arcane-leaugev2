@@ -59,7 +59,7 @@ class Shoot:
     def minion_bullet(self, position, minion_size):
         pos = (position[0] + minion_size, position[1] + minion_size / 2)
         duration = ((self.window_sizes[0] - pos[0]) / self.window_sizes[0]) * 5
-        self.bullets.append(Image(source="assets/Minions/bullet.png",
+        self.bullets.append(Image(source="assets/Minions/pocisk_minion.png",
                                   pos=pos,
                                   size=(self.bullet_size, self.bullet_size)))
         minion_shoot = Animation(x = self.window_sizes[0], t="out_sine", duration = duration)
@@ -68,8 +68,8 @@ class Shoot:
         minion_shoot.start(self.bullets[-1])
 
     def player_bullet(self, position, champion_size):
-        pos = (position[0], position[1] + champion_size / 4)
-        self.player_bullets .append(Image(source="assets/Minions/bullet.png",
+        pos = (position[0], position[1] + champion_size /8)
+        self.player_bullets .append(Image(source="assets/Champion/pocisk_yasuo.png",
                                          pos=pos,
                                          size=(self.bullet_size, self.bullet_size)))
         champion_shoot = Animation(x = -self.bullet_size, t="out_sine", duration = 3)

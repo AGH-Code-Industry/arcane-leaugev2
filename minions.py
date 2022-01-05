@@ -6,7 +6,7 @@ from kivy.animation import Animation
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 
-
+import champion
 from shooting import Shoot
 
 
@@ -119,6 +119,7 @@ class Minion:
                 if bullet.collide_widget(self.this):
                     self.champion_missiles.player_destroy(i)
                     self.current_minion_state = False
+                    champion.score += 1
                     break
 
     def remove_widget(self):

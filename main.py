@@ -15,9 +15,6 @@ from minions import Minion, Minions
 from background import Background
 
 class MainWidget(Widget):
-    pass
-
-class ArcadeLeaugeApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -26,15 +23,11 @@ class ArcadeLeaugeApp(App):
             self._keyboard.bind(on_key_down = self.on_keyboard_down)
             self._keyboard.bind(on_key_up = self.on_keyboard_up)
 
-    def build(self):
-        self.main_widget = MainWidget()
-        self.background = Background(self.main_widget)
-        self.champion = Champion(self.main_widget, self)
-        self.minons = Minions(self.main_widget, self.champion.champion_missile)
+        self.background = Background(self)
+        self.champion = Champion(self, self.parent)
+        self.minons = Minions(self, self.champion.champion_missile)
 
         Clock.schedule_interval(lambda dt: print(f"[\033[92mINFO\033[0m   ] [FPS         ] {str(Clock.get_fps())}"), 1)
-
-        return self.main_widget
 
     def is_desktop(self):
         if platform in ["linux", "win", "macosx"]:
@@ -62,6 +55,11 @@ class ArcadeLeaugeApp(App):
 
     def on_keyboard_up(self, keyboard, keycode):
         return True
+
+class ArcadeLeaugeApp(App):
+    @staticmethod
+    def build():
+        return MainWidget()
 
 
 if __name__ == '__main__':

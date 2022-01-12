@@ -62,7 +62,7 @@ class Shoot:
         self.bullets.append(Image(source="assets/Minions/pocisk_minion.png",
                                   pos=pos,
                                   size=(self.bullet_size, self.bullet_size)))
-        minion_shoot = Animation(x = self.window_sizes[0], t="out_sine", duration = duration)
+        minion_shoot = Animation(x = self.window_sizes[0] * 1.05, t="out_sine", duration = duration)
 
         self.main_screen.add_widget(self.bullets[-1])
         minion_shoot.start(self.bullets[-1])

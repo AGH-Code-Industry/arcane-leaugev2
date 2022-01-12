@@ -39,7 +39,6 @@ class Champion(Widget):
 
         Clock.schedule_interval(self.collide_minion_bullet, 1/60)
         Clock.schedule_interval(self.update_score, 1/60)
-        # Clock.schedule_interval(self.shot, self.champion_missile.rate)
 
     def shot(self):
         if self.champion_missile.player_reload:
@@ -49,10 +48,10 @@ class Champion(Widget):
     def move(self):
         self.champion.pos = (self.window_sizes[0] * .9,
                              (self.current_level + .13) / 3 * self.window_sizes[1])
+        print(self.champion.pos[1])
 
     def update_score(self, dt):
         self.score_label.text = f"score: {score}"
-
 
     def collide_minion_bullet(self, dt):
         for minion in Minions.minions:

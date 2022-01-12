@@ -12,7 +12,7 @@ from kivy.uix.stencilview import StencilView
 
 from champion import Champion
 from minions import Minion, Minions
-from background import Background
+from floors import Floors
 
 class MainWidget(Widget):
     pass
@@ -28,7 +28,7 @@ class ArcadeLeaugeApp(App):
 
     def build(self):
         self.main_widget = MainWidget()
-        self.background = Background(self.main_widget)
+        self.floors = Floors(self.main_widget)
         self.champion = Champion(self.main_widget, self)
         self.minons = Minions(self.main_widget, self.champion.champion_missile)
 
@@ -62,7 +62,6 @@ class ArcadeLeaugeApp(App):
 
     def on_keyboard_up(self, keyboard, keycode):
         return True
-
 
 if __name__ == '__main__':
     ArcadeLeaugeApp().run()
